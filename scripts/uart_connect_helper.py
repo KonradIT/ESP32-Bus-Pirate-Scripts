@@ -20,11 +20,10 @@ def connect_uart(bp: BusPirate | BusPirateWifi, rx_pin: int, tx_pin: int,
         bp.send("n\n")
         
     bp.wait()
-    bp.clear_echoes(2)
     print(bp.receive())
 
 if __name__ == "__main__":
     # Connect to the Bus Pirate
     bp = BusPirateWifi("192.168.0.57")
     bp.start()
-    connect_uart(bp, 44, 43, 115200, 8, "N", 1, False)
+    connect_uart(bp, 43, 44, 57600, 8, "N", 1, False)

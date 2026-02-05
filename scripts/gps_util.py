@@ -9,7 +9,7 @@ from uart_connect_helper import connect_uart
 bp = BusPirateWifi("192.168.0.57")
 bp.start()
 
-connect_uart(bp, 43, 44, 115200, 8, "N", 1, False)
+connect_uart(bp, tx_pin=43, rx_pin=44, baudrate=115200, bits=8, parity="N", stop=1, inverted=False)
 
 # Start UART read mode
 bp.send("read")
@@ -22,8 +22,11 @@ try:
         lines = bp.receive(skip=0)
         if lines:
             for line in lines:
-                msg = pynmea2.parse(line)
-                print(repr(msg))
+                try:
+                    msg = pynmea2.parse(line + "\n")
+                    print(repr(msg))
+                except pynmea2.ParseError as e:
+                    pass
 except KeyboardInterrupt:
     print("\nStopping GPS read...")
 finally:
