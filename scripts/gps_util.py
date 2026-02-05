@@ -4,13 +4,12 @@ from bus_pirate.bus_pirate_wifi import BusPirateWifi
 import time
 import os
 import pynmea2 # pip install pynmea2
-
+from uart_connect_helper import connect_uart
 # Connect to the Bus Pirate
 bp = BusPirateWifi("192.168.0.57")
 bp.start()
 
-# Change to UART mode
-bp.change_mode("uart")
+connect_uart(bp, 43, 44, 115200, 8, "N", 1, False)
 
 # Start UART read mode
 bp.send("read")
