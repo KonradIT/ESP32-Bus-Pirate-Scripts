@@ -2,7 +2,7 @@
 
 ![Bus Pirate Scripts](bus_pirate_scripts.png)
 
-A collection of **easy-to-use** Python scripts to control the [**ESP32 Bus Pirate**](https://github.com/geo-tp/ESP32-Bus-Pirate) via USB serial interface.
+A collection of **easy-to-use** Python scripts to control the [**ESP32 Bus Pirate**](https://github.com/geo-tp/ESP32-Bus-Pirate) via USB serial interface. Now also supports WiFi connection.
 
 ## Scripts
 
@@ -24,6 +24,7 @@ A collection of **easy-to-use** Python scripts to control the [**ESP32 Bus Pirat
 | `led_custom_animation.py` | Custom LED animation using led commands |
 | `infrared_devicebgone_loop.py` | Sends 'Device-B-Gone' IR commands in loop |
 | `dio_wait_and_pulse.py`  | Wait for a defined pin to go LOW to send a pulse |
+| `gps_util.py` | Parse NMEA packets from a UBlox M10 GPS module hooked up to a Bus Pirate |
 
 **Each script:**
 - Auto-detects the ESP32 Bus Pirate
@@ -58,6 +59,8 @@ python3 wifi_scan_log.py
 
 The `BusPirate` class abstracts serial communication and provides methods like:
 
+### Serial Connection:
+
 ```python
 from bus_pirate.bus_pirate import BusPirate
 
@@ -71,6 +74,19 @@ lines = bp.receive_all(2)      # Read lines from the device until a given silent
 bp.stop()                      # Close connection
 ```
 
+### WiFi Connection:
+
+```python
+from bus_pirate.bus_pirate_wifi import BusPirateWifi
+
+bp = BusPirateWifi("192.168.4.1")
+bp.start()
+bp.change_mode("uart")
+bp.send("read")
+response = bp.receive()
+bp.stop()
+```
+
 Additional `Helper` class to parse and manipulate response from the ESP32 Bus Pirate.
 
 
@@ -81,6 +97,7 @@ scripts/
 │
 ├── bus_pirate/        # Bus Pirate class
 │   ├── bus_pirate.py
+│   ├── bus_pirate_wifi.py
 │   └── helper.py
 │
 ├── wifi_script_definition.py
